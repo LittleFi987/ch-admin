@@ -11,9 +11,7 @@ import org.springframework.context.annotation.ImportResource;
  * Created by chenhaoye on 2017/9/9.
  */
 @ImportResource({"classpath*:spring/app-context-*.xml"})
-@ComponentScan({"com.ych.service.*", "com.ych.gateway.*"})
 @SpringBootConfiguration
-@EnableAutoConfiguration(exclude={MultipartAutoConfiguration.class})
 public class GatewayApplication {
     public static void main(String[] args) {
         new SpringApplicationBuilder()

@@ -2,56 +2,18 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
 
-			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+
+    <!-- 自动扫描注入bean -->
+    <context:component-scan
+            base-package="com.ych.gateway.*,
+	                  com.ych.service.*">
+    </context:component-scan>
 
     <!-- 启用Aspectj -->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
-
-    <!--	&lt;!&ndash; 业务方法注解拦截处理，缓存主机和数据源切换，可以重写该拦截器customMasterConditions方法 &ndash;&gt;
-        <bean id="businessMethodInterceptor" class="com.soka.core.interceptor.RoutingAndCachingInterceptor">
-            <property name="needRoutingDatasource" value="false" />
-            &lt;!&ndash;<property name="cacheService" ref="jdkSerializationShardedCacheService" />&ndash;&gt;
-        </bean>
-        <aop:config>
-            <aop:advisor advice-ref="businessMethodInterceptor" order="200"
-                pointcut="(execution(* *..manager..*Manager.*(..)) or execution(* *..dubbo.client..*Client.*(..)) or execution(* *..handler..*Handler.*(..)))" />
-        </aop:config>-->
-
-    <mvc:annotation-driven>
-        <mvc:message-converters>
-            <bean id="jsonHttpMessageConverter"
-                  class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-                <property name="supportedMediaTypes">
-                    <list>
-                        <value>text/html;charset=UTF-8</value>
-                        <value>application/json;charset=UTF-8</value>
-                    </list>
-                </property>
-                <property name="objectMapper">
-                    <bean class="com.fasterxml.jackson.databind.ObjectMapper">
-                        <property name="serializationInclusion">
-                            <value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
-                        </property>
-                        <property name="dateFormat">
-                            <bean class="java.text.SimpleDateFormat">
-                                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss"/>
-                            </bean>
-                        </property>
-                    </bean>
-                </property>
-            </bean>
-        </mvc:message-converters>
-    </mvc:annotation-driven>
-
-    <!--文件上传配置-->
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="defaultEncoding" value="UTF-8"/>
-        <property name="maxUploadSize" value="2097152"/>
-        <property name="maxInMemorySize" value="4096"/>
-    </bean>
-
-
 </beans>

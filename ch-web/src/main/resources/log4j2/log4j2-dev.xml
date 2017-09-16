@@ -2,7 +2,7 @@
 <Configuration status="WARN" strict="true">
 
     <Properties>
-        <Property name="project.name">seckill</Property>
+        <Property name="project.name">ch-admin</Property>
         <Property name="logging.file.path">${project.name}/logs</Property>
         <Property name="logging.file.name">${logging.file.path}/${project.name}.log</Property>
         <Property name="logging.file.warn.name">${logging.file.path}/${project.name}-warn.log</Property>
