@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ImportResource;
  */
 @ImportResource({"classpath*:spring/app-context-*.xml"})
 @SpringBootConfiguration
+@EnableAutoConfiguration
 public class GatewayApplication {
     public static void main(String[] args) {
         new SpringApplicationBuilder()
