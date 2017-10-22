@@ -25,7 +25,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 
     @Override
     public boolean supports(AuthenticationToken token) {
-        return token instanceof UsernamePasswordToken;
+        return token instanceof UserToken;
     }
 
     // 认证

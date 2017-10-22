@@ -14,14 +14,14 @@ import org.springframework.stereotype.Component;
 public class PasswordHelper {
     private RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
     private String algorithmName = "md5";
-    private final int hashIterations = 2;
+    private final int hashIterations = 1;
 
     public void encryptPassword(UserDTO userDTO) {
         // User对象包含最基本的字段Username和Password
         userDTO.setSalt(randomNumberGenerator.nextBytes().toHex());
         // 将用户的注册密码经过散列算法替换成一个不可逆的新密码保存进数据，散列过程使用了盐
         String newPassword = new SimpleHash(algorithmName, userDTO.getPwd(),
-                ByteSource.Util.bytes(userDTO.getSalt()), hashIterations).toHex();
+                ByteSource.Util.bytes(userDTO.getCredentialsSalt()), hashIterations).toHex();
         userDTO.setPwd(newPassword);
     }
 }

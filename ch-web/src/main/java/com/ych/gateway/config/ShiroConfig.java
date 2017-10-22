@@ -20,14 +20,14 @@ import java.util.Map;
 /**
  * Created by chenhaoye on 2017/9/16.
  */
-@Configuration
+//@Configuration
 public class ShiroConfig {
     /**
      * LifecycleBeanPostProcessor，这是个DestructionAwareBeanPostProcessor的子类，
      * 负责org.apache.shiro.util.Initializable类型bean的生命周期的，初始化和销毁。
      * 主要是AuthorizingRealm类的子类，以及EhCacheManager类。
      */
-    @Bean(name = "lifecycleBeanPostProcessor")
+//    @Bean(name = "lifecycleBeanPostProcessor")
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
     }
@@ -37,12 +37,11 @@ public class ShiroConfig {
      * 防止密码在数据库里明码保存，当然在登陆认证的时候，
      * 这个类也负责对form里输入的密码进行编码。
      */
-    @Bean(name = "hashedCredentialsMatcher")
+//    @Bean(name = "hashedCredentialsMatcher")
     public HashedCredentialsMatcher hashedCredentialsMatcher() {
         HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
-        credentialsMatcher.setHashAlgorithmName("MD5");
+        credentialsMatcher.setHashAlgorithmName("md5");
         credentialsMatcher.setHashIterations(2);
-        credentialsMatcher.setStoredCredentialsHexEncoded(true);
         return credentialsMatcher;
     }
 
@@ -50,11 +49,11 @@ public class ShiroConfig {
      * MyShiroRealm，这是个自定义的认证类，继承自AuthorizingRealm，
      * 负责用户的认证和权限的处理，可以参考JdbcRealm的实现。
      */
-    @Bean(name = "shiroRealm")
-    @DependsOn("lifecycleBeanPostProcessor")
+//    @Bean(name = "shiroRealm")
+//    @DependsOn("lifecycleBeanPostProcessor")
     public MyShiroRealm shiroRealm() {
         MyShiroRealm realm = new MyShiroRealm();
-//        realm.setCredentialsMatcher(hashedCredentialsMatcher());
+        realm.setCredentialsMatcher(hashedCredentialsMatcher());
         return realm;
     }
 
@@ -72,7 +71,7 @@ public class ShiroConfig {
      * SecurityManager，权限管理，这个类组合了登陆，登出，权限，session的处理，是个比较重要的类。
      * //
      */
-    @Bean(name = "securityManager")
+//    @Bean(name = "securityManager")
     public DefaultWebSecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(shiroRealm());
@@ -84,7 +83,7 @@ public class ShiroConfig {
      * ShiroFilterFactoryBean，是个factorybean，为了生成ShiroFilter。
      * 它主要保持了三项数据，securityManager，filters，filterChainDefinitionManager。
      */
-    @Bean(name = "shiroFilter")
+//    @Bean(name = "shiroFilter")
     public ShiroFilterFactoryBean shiroFilterFactoryBean() {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager());
@@ -100,7 +99,7 @@ public class ShiroConfig {
 //        filterChainDefinitionManager.put("/user/**", "authc,roles[ROLE_USER]");
 //        filterChainDefinitionManager.put("/events/**", "authc,roles[ROLE_ADMIN]");
 //        filterChainDefinitionManager.put("/user/edit/**", "authc,perms[user:edit]");// 这里为了测试，固定写死的值，也可以从数据库或其他配置中读取
-//        filterChainDefinitionManager.put("/**", "anon");
+        filterChainDefinitionManager.put("/**", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionManager);
 
 
@@ -112,8 +111,8 @@ public class ShiroConfig {
     /**
      * DefaultAdvisorAutoProxyCreator，Spring的一个bean，由Advisor决定对哪些类的方法进行AOP代理。
      */
-    @Bean
-    @ConditionalOnMissingBean
+//    @Bean
+//    @ConditionalOnMissingBean
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator defaultAAP = new DefaultAdvisorAutoProxyCreator();
         defaultAAP.setProxyTargetClass(true);
@@ -124,7 +123,7 @@ public class ShiroConfig {
      * AuthorizationAttributeSourceAdvisor，shiro里实现的Advisor类，
      * 内部使用AopAllianceAnnotationsAuthorizingMethodInterceptor来拦截用以下注解的方法。
      */
-    @Bean
+//    @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {
         AuthorizationAttributeSourceAdvisor aASA = new AuthorizationAttributeSourceAdvisor();
         aASA.setSecurityManager(securityManager());
